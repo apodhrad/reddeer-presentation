@@ -1,0 +1,66 @@
+\documentclass{beamer}
+\usetheme{AnnArbor}
+\usecolortheme{beaver}
+\usepackage{tikz}
+\usepackage{color}
+
+\setbeamercolor{title}{fg=black,bg=brown!20}
+\setbeamercolor{frametitle}{fg=brown,bg=white}
+%\setbeamercolor{section in head/foot}{fg=green,bg=yellow}
+%\setbeamercolor{subsection in head/foot}{bg=white}
+
+\begin{document}
+\title{Getting started with RedDeer}   
+\author{Andrej Podhradsky}
+\date{\today} 
+%\logo{\includegraphics[height=1cm]{reddeer_logo.png}\vspace{220pt}}
+
+\addtobeamertemplate{title page}{\center{\includegraphics[height=2cm]{reddeer_logo.png}}}{}
+
+\addtobeamertemplate{frametitle}{}{
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=-8pt] at (current page.north east) {\includegraphics[height=0.8cm]{reddeer_logo.png}};
+\end{tikzpicture}}
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of contents}\tableofcontents} 
+
+\section{Requirements} 
+\subsection{What you need}
+\frame{\frametitle{What you need}
+\begin{itemize}
+\item Eclipse Luna / JBDS 7+ \pause
+\item VNC server / viewer \pause
+\end{itemize}
+}
+
+
+\section{SWT widgets and how to find them} 
+\subsection{SWT widgets}
+\frame{\frametitle{SWT widgets}
+}
+\subsection{How to find widgets}
+\frame{\frametitle{How to find widgets}
+}
+
+\section{Executing RedDeer tests}
+\subsection{From IDE}
+\frame{\frametitle{From IDE}
+}
+\subsection{Using maven}
+\frame{\frametitle{Using maven}
+}
+
+
+\section{Example}
+\subsection{Example}
+\frame{\frametitle{Example}
+}
+
+\section{Debugging}
+\subsection{Debugging}
+\frame{\frametitle{Debugging}
+}
+
+\end{document}
