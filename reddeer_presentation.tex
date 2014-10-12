@@ -33,8 +33,78 @@
 
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
-\section{Requirements} 
-\subsection{What you need}
+\section{Introduction}
+\subsection{RedDeer Introduction}
+\begin{frame}[fragile]
+\frametitle{RedDeer Introduction}
+\begin{itemize}
+\item Framework for automating eclipse tests\\\url{https://github.com/jboss-reddeer/reddeer/wiki}
+\item Update site\\\url{http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.6.0}
+\item Example
+\begin{lstlisting}
+new PushButton("OK").click();
+new LabeledText("Name").setText("test-name");
+new TextEditor("Demo.java").save();
+\end{lstlisting}
+\item How it works?
+\begin{itemize}
+\item Each component is found in the constructor
+\item The appropriate method (or event) is called in the main thread
+\item Waiting until the operation has finished
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{RedDeer Hi-Level API}
+\begin{frame}[fragile]
+\frametitle{RedDeer Hi-Level API}
+\begin{itemize}
+\item This is key API for building functional tests by using RedDeer
+\item Wizards
+\begin{lstlisting}
+NewJavaClassWizardDialog wizard =
+        new NewJavaClassWizardDialog();
+wizard.open();
+wizard.getFirstPage().setName("HelloWorld");
+wizard.getFirstPage().setPackage("com.example");
+wizard.finish();
+\end{lstlisting}
+\item Views
+\begin{lstlisting}
+ProblemsView problemsView = new ProblemsView();
+problemsView.open();
+problemsView.getAllErrors();
+problemsView.getAllWarnings();
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{RedDeer Test Execution}
+\begin{frame}[fragile]
+\frametitle{RedDeer Test Execution}
+\begin{itemize}
+\item Generate reddeer maven archetype
+\begin{lstlisting}[language=sh]
+git clone https://github.com/jboss-reddeer/reddeer.git
+mvn clean install -pl archetype/ -DskipTests
+\end{lstlisting}
+\item Create a reddeer project
+\begin{lstlisting}[language=sh]
+mvn archetype:generate 
+        -DarchetypeGroupId=org.jboss.reddeer
+        -DarchetypeArtifactId=jboss-reddeer-archetype
+mvn clean verify
+\end{lstlisting}
+\item Notice that each test class is annotated with
+\begin{lstlisting}[language=Java]
+@RunWith(RedDeerSuite.class)
+\end{lstlisting}
+\item From IDE just select Run As \textgreater RedDeer Test
+\item It's recommended to run tests in another display (vnc, xephyr, ...)
+\end{itemize}
+\end{frame}
+
+\section{Requirements}
 \frame{\frametitle{What you need}
 \begin{itemize}
 \item Eclipse Luna / JBDS 7+ \pause
