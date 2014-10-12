@@ -8,6 +8,7 @@
 \lstset{language=Java,
   basicstyle=\footnotesize\ttfamily,
   keywordstyle=\footnotesize\color{blue}\ttfamily,
+  commentstyle=\footnotesize\color{gray}\ttfamily,
 }
 
 \definecolor{darkred}{rgb}{0.8,0,0}
@@ -33,13 +34,14 @@
 
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
+
 \section{Introduction}
 \subsection{RedDeer Introduction}
 \begin{frame}[fragile]
 \frametitle{RedDeer Introduction}
 \begin{itemize}
 \item Framework for automating eclipse tests\\\url{https://github.com/jboss-reddeer/reddeer/wiki}
-\item Update site\\\url{http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.6.0}
+\item Tests are built and executed by tycho plugin (as all eclipse plugins)
 \item Example
 \begin{lstlisting}
 new PushButton("OK").click();
@@ -79,11 +81,34 @@ problemsView.getAllWarnings();
 \end{itemize}
 \end{frame}
 
-\subsection{RedDeer Test Execution}
+
+\section{Test Execution}
+
+\subsection{Prerequisite}
 \begin{frame}[fragile]
-\frametitle{RedDeer Test Execution}
+\frametitle{Prerequisite}
 \begin{itemize}
-\item Generate reddeer maven archetype
+\item Eclipse Luna for JEE Developers or JBDS 7.1.1.GA
+\item RedDeer v0.6.0\\\url{http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.6.0}
+\item Display server, e.g. vnc\\We need isolated display since other events can affect our tests
+\begin{lstlisting}[language=sh]
+sudo yum install tigervnc tigervnc-server
+vncpasswd    // set password
+vncserver :2 -geometry 1500x900
+vncviewer :2
+\end{lstlisting}
+\item Each test class must be annotated with
+\begin{lstlisting}[language=Java]
+@RunWith(RedDeerSuite.class)
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{Using Maven}
+\begin{frame}[fragile]
+\frametitle{Using Maven}
+\begin{itemize}
+\item Build reddeer archetype
 \begin{lstlisting}[language=sh]
 git clone https://github.com/jboss-reddeer/reddeer.git
 mvn clean install -pl archetype/ -DskipTests
@@ -93,59 +118,65 @@ mvn clean install -pl archetype/ -DskipTests
 mvn archetype:generate 
         -DarchetypeGroupId=org.jboss.reddeer
         -DarchetypeArtifactId=jboss-reddeer-archetype
-mvn clean verify
 \end{lstlisting}
-\item Notice that each test class is annotated with
-\begin{lstlisting}[language=Java]
-@RunWith(RedDeerSuite.class)
+\item Execute tests
+\begin{lstlisting}[language=sh]
+DISPLAY=:2 mvn clean verify [-Dtest...] [-Dtycho.localArtifacts=ignore]
 \end{lstlisting}
-\item From IDE just select Run As \textgreater RedDeer Test
-\item It's recommended to run tests in another display (vnc, xephyr, ...)
+\item Executing tests against an existing eclipse instance
+\begin{lstlisting}[language=sh]
+DISPLAY=:2 mvn clean verify -Dtest.installPath=...
+\end{lstlisting}
 \end{itemize}
 \end{frame}
 
-\section{Requirements}
-\frame{\frametitle{What you need}
-\begin{itemize}
-\item Eclipse Luna / JBDS 7+ \pause
-\item VNC server / viewer \pause
-\end{itemize}
-}
-
-
-\section{SWT widgets and how to find them} 
-\subsection{SWT widgets}
-\frame{\frametitle{SWT widgets}
-}
-\subsection{How to find widgets}
-\frame{\frametitle{How to find widgets}
-}
-
-\section{Executing RedDeer tests}
-\subsection{From IDE}
-\frame{\frametitle{From IDE}
-}
-\subsection{Using maven}
-\frame{\frametitle{Using maven}
-}
-
-
-\section{Example}
-\subsection{Example}
+\subsection{Using IDE}
 \begin{frame}[fragile]
-\frametitle{Example}
-\begin{lstlisting}
-public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println("Hello World");
-  }
-}
-\end{lstlisting}
+\frametitle{Using IDE}
+\begin{enumerate}
+\item Import existing project as maven project
+\item Select Run \textgreater Run Configurations...
+\item Create new RedDeer Test configuration
+\item On tab Environment add new variable DISPLAY with value :2
+\end{enumerate}
 \end{frame}
+
 
 \section{Debugging}
-\subsection{Debugging}
-\frame{\frametitle{Debugging}
-}
+\begin{frame}[fragile]
+\frametitle{Debugging}
+\begin{itemize}
+\item You can debug RedDeer tests as any other JUnit tests
+\item Remote debugging (on localhost, jenkins, ...)
+\begin{lstlisting}[language=sh]
+DISPLAY=:2 mvn clean verify -DdebugPort=8001
+\end{lstlisting}
+Then, in IDE do as follows
+\begin{enumerate}
+\item Select Run \textgreater Debug Configurations...
+\item Create new Remote Java Application
+\item Select Standard (Socket Attach) as connection type
+\item Set package, host and port (8001)
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\section{RedDeer in Details}
+
+\subsection{Matchers}
+\begin{frame}[fragile]
+\frametitle{Matchers}
+\end{frame}
+
+\subsection{Conditions}
+\begin{frame}[fragile]
+\frametitle{Conditions}
+\end{frame}
+
+\subsection{Waits and timeouts}
+\begin{frame}[fragile]
+\frametitle{Waits and timeouts}
+\end{frame}
 
 \end{document}
