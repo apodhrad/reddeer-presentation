@@ -88,14 +88,18 @@ problemsView.getAllWarnings();
 \begin{frame}[fragile]
 \frametitle{Prerequisite}
 \begin{itemize}
-\item Eclipse Luna for JEE Developers or JBDS 7.1.1.GA
-\item RedDeer v0.6.0\\\url{http://download.jboss.org/jbosstools/updates/stable/luna/core/reddeer/0.6.0}
+\item Download RedDeer IDE 0.6.0\\\url{http://download.eng.brq.redhat.com/scratch/apodhrad}
+\item Checkout RedDeer quickstart\\\url{https://github.com/apodhrad/reddeer-quickstart}
 \item Display server, e.g. vnc\\We need isolated display since other events can affect our tests
 \begin{lstlisting}[language=sh]
 sudo yum install tigervnc tigervnc-server
 vncpasswd    // set password
 vncserver :2 -geometry 1500x900
 vncviewer :2
+\end{lstlisting}
+\item Run the quickstart
+\begin{lstlisting}[language=sh]
+DISPLAY=:2 mvn clean verify
 \end{lstlisting}
 \item Each test class must be annotated with
 \begin{lstlisting}[language=Java]
@@ -104,45 +108,29 @@ vncviewer :2
 \end{itemize}
 \end{frame}
 
-\subsection{Using Maven}
+\subsection{Using Maven and IDE}
 \begin{frame}[fragile]
-\frametitle{Using Maven}
+\frametitle{Using Maven and IDE}
 \begin{itemize}
-\item Build reddeer archetype
-\begin{lstlisting}[language=sh]
-git clone https://github.com/jboss-reddeer/reddeer.git
-mvn clean install -pl archetype/ -DskipTests
-\end{lstlisting}
-\item Create a reddeer project
-\begin{lstlisting}[language=sh]
-mvn archetype:generate 
-        -DarchetypeGroupId=org.jboss.reddeer
-        -DarchetypeArtifactId=jboss-reddeer-archetype
-\end{lstlisting}
 \item Execute tests
 \begin{lstlisting}[language=sh]
-DISPLAY=:2 mvn clean verify [-Dtest...] [-Dtycho.localArtifacts=ignore]
+DISPLAY=:2 mvn clean verify [-Dtest=...]
 \end{lstlisting}
 \item Executing tests against an existing eclipse instance
 \begin{lstlisting}[language=sh]
 DISPLAY=:2 mvn clean verify -Dtest.installPath=...
 \end{lstlisting}
+\item Execute tests from IDE as follows
+\begin{enumerate}
+\item Import the quickstart as maven project
+\item Select Run \textgreater Run Configurations...
+\item Find the configurtion RedDeer Test \textgreater BasicTest
+\item On tab Environment check the variable DISPLAY with value :2
+\end{enumerate}
 \end{itemize}
 \end{frame}
 
-\subsection{Using IDE}
-\begin{frame}[fragile]
-\frametitle{Using IDE}
-\begin{enumerate}
-\item Import existing project as maven project
-\item Select Run \textgreater Run Configurations...
-\item Create new RedDeer Test configuration
-\item On tab Environment add new variable DISPLAY with value :2
-\end{enumerate}
-\end{frame}
-
-
-\section{Debugging}
+\subsection{Debugging}
 \begin{frame}[fragile]
 \frametitle{Debugging}
 \begin{itemize}
@@ -164,19 +152,53 @@ Then, in IDE do as follows
 
 \section{RedDeer in Details}
 
-\subsection{Matchers}
+\subsection{Recorder}
 \begin{frame}[fragile]
-\frametitle{Matchers}
-\end{frame}
+\frametitle{Recorder}
+\begin{enumerate}
+\item File \textgreater New \textgreater Other... \textgreater Run Test Recorder
+\item Select basic dialog
+\item Choose RedDeer SWT as target bot API
+\item Start recording
+\end{enumerate}
+\begin{itemize}
+\item Record creating new BPEL project and process
+\end{itemize}
 
-\subsection{Conditions}
-\begin{frame}[fragile]
-\frametitle{Conditions}
 \end{frame}
 
 \subsection{Waits and timeouts}
 \begin{frame}[fragile]
 \frametitle{Waits and timeouts}
+\begin{itemize}
+\item Used in case when tests have to wait for some time or condition to be passed.
+\item Usage
+\begin{lstlisting}
+AbstractWait.sleep(TimePeriod.SHORT);
+new WaitUntil(new ShellWithTextIsActive("Delete Server"));
+new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+\end{lstlisting}
+\item You can create our own condition, just implement WaitCondintion
+\begin{lstlisting}
+public interface WaitCondition {
+
+  boolean test();
+
+  String description();
+
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{Matchers}
+\begin{frame}[fragile]
+\frametitle{Matchers}
+\end{frame}
+
+\subsection{Requirments}
+\begin{frame}[fragile]
+\frametitle{Requirements}
 \end{frame}
 
 \end{document}
