@@ -178,7 +178,7 @@ AbstractWait.sleep(TimePeriod.SHORT);
 new WaitUntil(new ShellWithTextIsActive("Delete Server"));
 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 \end{lstlisting}
-\item You can create our own condition, just implement WaitCondintion
+\item You can create our own condition, just implement WaitCondition
 \begin{lstlisting}
 public interface WaitCondition {
 
@@ -194,11 +194,31 @@ public interface WaitCondition {
 \subsection{Matchers}
 \begin{frame}[fragile]
 \frametitle{Matchers}
+\begin{itemize}
+\item From hamcrest library
+\item Widely used in widget searching
+\item Provided by RedDeer: TextMatcher, RegexMatcher, LabelMatcher
+\item You can create your own matcher by extending BaseMatcher
+\item Just implement the following method
+\begin{lstlisting}
+public boolean matches(Object item);
+\end{lstlisting}
+\end{itemize}
 \end{frame}
 
 \subsection{Requirments}
 \begin{frame}[fragile]
 \frametitle{Requirements}
+\begin{itemize}
+\item Requirement represents one prerequisite required by a test
+\item Similar to @BeforeClass but if a requirement cannot be fulfilled the test is not executed.
+\item Examples
+\begin{lstlisting}
+@OpenPerspective(BPELPerspective.class)
+
+@SwitchYard(server = @Server(type = ANY, state = RUNNING))
+\end{lstlisting}
+\end{itemize}
 \end{frame}
 
 \end{document}
