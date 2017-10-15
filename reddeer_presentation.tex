@@ -18,7 +18,7 @@
 %\setbeamercolor{section in head/foot}{fg=green,bg=yellow}
 %\setbeamercolor{subsection in head/foot}{bg=white}
 \begin{document}
-\title{Getting started with RedDeer}   
+\title{Functional Testing with RedDeer}   
 \author{Andrej Podhradsky}
 \date{\today} 
 %\logo{\includegraphics[height=1cm]{reddeer_logo.png}\vspace{220pt}}
@@ -36,30 +36,47 @@
 
 
 \section{Introduction}
-\subsection{RedDeer Introduction}
+
+\subsection{About RedDeer}
 \begin{frame}[fragile]
-\frametitle{RedDeer Introduction}
-\begin{itemize}
-\item Framework for automating eclipse tests\\\url{https://github.com/jboss-reddeer/reddeer/wiki}
-\item Tests are built and executed by tycho plugin (as all eclipse plugins)
-\item Example
+\frametitle{About RedDeer}
+testing framework
+Java language
+programmatic approach like SWTBot
+\end{frame}
+
+\subsection{RedDeer vs SWTBot}
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+RedDeer  
 \begin{lstlisting}
 new PushButton("OK").click();
 new LabeledText("Name").setText("test-name");
 new TextEditor("Demo.java").save();
 \end{lstlisting}
-\item How it works?
+SWTBot
+\begin{lstlisting}
+bot.button("OK").click();
+bot.textWithLabel("Name").setText("test-name");
+bot.editor("Demo.java").save();
+\end{lstlisting}
+Matchers
 \begin{itemize}
-\item Each component is found in the constructor
-\item The appropriate method (or event) is called in the main thread
-\item Waiting until the operation has finished
-\end{itemize}
-\end{itemize}
+\item Hamcrest library
+\item Widely used in widget searching
+\begin{lstlisting}
+new WithStyleMatcher(SWT.PUSH)
+new WithLabelMatcher("Name");
+new WithTextMatcher("Demoj.java");
+\end{lstlisting}
+\begin{lstlisting}
 \end{frame}
 
-\subsection{RedDeer Hi-Level API}
+\section{RedDeer in Details}
+
+\subsection{Hi-Level API}
 \begin{frame}[fragile]
-\frametitle{RedDeer Hi-Level API}
+\frametitle{Hi-Level API}
 \begin{itemize}
 \item This is key API for building functional tests by using RedDeer
 \item Wizards
@@ -81,93 +98,7 @@ problemsView.getAllWarnings();
 \end{itemize}
 \end{frame}
 
-
-\section{Test Execution}
-
-\subsection{Prerequisite}
-\begin{frame}[fragile]
-\frametitle{Prerequisite}
-\begin{itemize}
-\item Download RedDeer IDE 0.6.0\\\url{http://download.eng.brq.redhat.com/scratch/apodhrad}
-\item Checkout RedDeer quickstart\\\url{https://github.com/apodhrad/reddeer-quickstart}
-\item Display server, e.g. vnc\\We need isolated display since other events can affect our tests
-\begin{lstlisting}[language=sh]
-sudo yum install tigervnc tigervnc-server
-vncpasswd    // set password
-vncserver :2 -geometry 1500x900
-vncviewer :2
-\end{lstlisting}
-\item Run the quickstart
-\begin{lstlisting}[language=sh]
-DISPLAY=:2 mvn clean verify
-\end{lstlisting}
-\item Each test class must be annotated with
-\begin{lstlisting}[language=Java]
-@RunWith(RedDeerSuite.class)
-\end{lstlisting}
-\end{itemize}
-\end{frame}
-
-\subsection{Using Maven and IDE}
-\begin{frame}[fragile]
-\frametitle{Using Maven and IDE}
-\begin{itemize}
-\item Execute tests
-\begin{lstlisting}[language=sh]
-DISPLAY=:2 mvn clean verify [-Dtest=...]
-\end{lstlisting}
-\item Executing tests against an existing eclipse instance
-\begin{lstlisting}[language=sh]
-DISPLAY=:2 mvn clean verify -Dtest.installPath=...
-\end{lstlisting}
-\item Execute tests from IDE as follows
-\begin{enumerate}
-\item Import the quickstart as maven project
-\item Select Run \textgreater Run Configurations...
-\item Find the configurtion RedDeer Test \textgreater BasicTest
-\item On tab Environment check the variable DISPLAY with value :2
-\end{enumerate}
-\end{itemize}
-\end{frame}
-
-\subsection{Debugging}
-\begin{frame}[fragile]
-\frametitle{Debugging}
-\begin{itemize}
-\item You can debug RedDeer tests as any other JUnit tests
-\item Remote debugging (on localhost, jenkins, ...)
-\begin{lstlisting}[language=sh]
-DISPLAY=:2 mvn clean verify -DdebugPort=8001
-\end{lstlisting}
-Then, in IDE do as follows
-\begin{enumerate}
-\item Select Run \textgreater Debug Configurations...
-\item Create new Remote Java Application
-\item Select Standard (Socket Attach) as connection type
-\item Set package, host and port (8001)
-\end{enumerate}
-\end{itemize}
-\end{frame}
-
-
-\section{RedDeer in Details}
-
-\subsection{Recorder}
-\begin{frame}[fragile]
-\frametitle{Recorder}
-\begin{enumerate}
-\item File \textgreater New \textgreater Other... \textgreater Run Test Recorder
-\item Select basic dialog
-\item Choose RedDeer SWT as target bot API
-\item Start recording
-\end{enumerate}
-\begin{itemize}
-\item Record creating new BPEL project and process
-\end{itemize}
-
-\end{frame}
-
-\subsection{Waits and timeouts}
+\subsection{Waiting conditions}
 \begin{frame}[fragile]
 \frametitle{Waits and timeouts}
 \begin{itemize}
@@ -214,23 +145,20 @@ public boolean matches(Object item);
 \item Similar to @BeforeClass but if a requirement cannot be fulfilled the test is not executed.
 \item Examples
 \begin{lstlisting}
-@OpenPerspective(BPELPerspective.class)
-
-@SwitchYard(server = @Server(type = ANY, state = RUNNING))
+@Cleanworkspace 
+@OpenPerspective(JavaPerspective.class)
+@Server(state = RUNNING)
 \end{lstlisting}
 \end{itemize}
 \end{frame}
 
-
-\section{Learning Materials}
+\subsection{Tools}
 \begin{frame}[fragile]
-\frametitle{Learning Materials}
+\frametitle{Tools}
 \begin{itemize}
-\item RedDeer Wiki\\\url{https://github.com/jboss-reddeer/reddeer/wiki}
-\item Say Hello to Red Deer\\\url{http://java.dzone.com/articles/hunting-swt-test-framework-say}
-\item How Red Deer Helps you to Debug Failed Tests\\\url{http://architects.dzone.com/articles/if-bad-things-happen-good}
-\item Creating Complex Test Configurations with Red Deer\\\url{http://java.dzone.com/articles/creating-complex-test}
-\item JBTIS Tests\\\url{https://github.com/jbosstools/jbosstools-integration-stack-tests}
+\item Spy
+\item Recorder
+\item Generator
 \end{itemize}
 \end{frame}
 
