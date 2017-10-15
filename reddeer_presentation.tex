@@ -40,9 +40,12 @@
 \subsection{About RedDeer}
 \begin{frame}[fragile]
 \frametitle{About RedDeer}
-testing framework
-Java language
-programmatic approach like SWTBot
+An extensible framework used for development of automated SWT/Eclipse tests which
+\begin{itemize}
+\item interacts with application’s user interface
+\item uses a programmatic approach just like SWTBot
+\item can be executed from IDE and from command line
+\end{itemize}
 \end{frame}
 
 \subsection{RedDeer vs SWTBot}
@@ -51,25 +54,26 @@ programmatic approach like SWTBot
 RedDeer  
 \begin{lstlisting}
 new PushButton("OK").click();
-new LabeledText("Name").setText("test-name");
+new LabeledText("Projec name").setText("helloworld");
 new TextEditor("Demo.java").save();
 \end{lstlisting}
+\vspace{0.5cm}
 SWTBot
 \begin{lstlisting}
 bot.button("OK").click();
-bot.textWithLabel("Name").setText("test-name");
+bot.textWithLabel("Project name").setText("helloworld");
 bot.editor("Demo.java").save();
 \end{lstlisting}
-Matchers
-\begin{itemize}
-\item Hamcrest library
-\item Widely used in widget searching
-\begin{lstlisting}
-new WithStyleMatcher(SWT.PUSH)
-new WithLabelMatcher("Name");
-new WithTextMatcher("Demoj.java");
-\end{lstlisting}
-\begin{lstlisting}
+%Matchers
+%\begin{itemize}
+%\item Hamcrest library
+%\item Widely used in widget searching
+%\begin{lstlisting}
+%new WithStyleMatcher(SWT.PUSH)
+%new WithLabelMatcher("Name");
+%new WithTextMatcher("Demoj.java");
+%\end{lstlisting}
+%\end{itemize}
 \end{frame}
 
 \section{RedDeer in Details}
@@ -77,49 +81,37 @@ new WithTextMatcher("Demoj.java");
 \subsection{Hi-Level API}
 \begin{frame}[fragile]
 \frametitle{Hi-Level API}
-\begin{itemize}
-\item This is key API for building functional tests by using RedDeer
-\item Wizards
+Wizards
 \begin{lstlisting}
-NewJavaClassWizardDialog wizard =
-        new NewJavaClassWizardDialog();
+JavaProjectWizard wizard = new JavaProjectWizard();
 wizard.open();
-wizard.getFirstPage().setName("HelloWorld");
-wizard.getFirstPage().setPackage("com.example");
+new NewJavaProjectWizardPageOne(wizard).setProjectName("foo");
 wizard.finish();
 \end{lstlisting}
-\item Views
+\vspace{0.5cm}
+Views
 \begin{lstlisting}
 ProblemsView problemsView = new ProblemsView();
 problemsView.open();
 problemsView.getAllErrors();
 problemsView.getAllWarnings();
 \end{lstlisting}
-\end{itemize}
 \end{frame}
 
 \subsection{Waiting conditions}
 \begin{frame}[fragile]
-\frametitle{Waits and timeouts}
-\begin{itemize}
-\item Used in case when tests have to wait for some time or condition to be passed.
-\item Usage
+\frametitle{Waiting conditions}
 \begin{lstlisting}
 AbstractWait.sleep(TimePeriod.SHORT);
-new WaitUntil(new ShellWithTextIsActive("Delete Server"));
+new WaitUntil(new ConsoleHasText("Server is started"));
 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-\end{lstlisting}
-\item You can create our own condition, just implement WaitCondition
-\begin{lstlisting}
-public interface WaitCondition {
+new WaitUntil(new ShellIsAvailable("New Java Project"));
 
-  boolean test();
-
-  String description();
-
+new WaitUntil(condition, false);
+if (condition.getResult() != null) {
+  ...
 }
 \end{lstlisting}
-\end{itemize}
 \end{frame}
 
 \subsection{Matchers}
