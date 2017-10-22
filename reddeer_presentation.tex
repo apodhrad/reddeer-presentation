@@ -238,4 +238,28 @@ public class ServerPresentTest {
 \end{center}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Requirements}
+\begin{lstlisting}
+GEFEditor gefEditor = new GEFEditor("blueprint.xml");
+gefEditor.addToolFromPalette("Log", 50, 100);
+gefEditor.addToolFromPalette("Bean", 200, 100);
+
+GraphitiEditPart bean = new LabeledGraphitiEditPart("Bean");
+bean.select();
+bean.getContextButton("Delete").click();
+
+Shell shell = new DefaultShell("Confirm Delete");
+new PushButton(shell, "Yes").click();
+new WaitWhile(new ShellIsAvailable(shell);
+\end{lstlisting}
+\end{frame}
+
+\section{Evaluate the session}
+\begin{frame}[fragile]
+\begin{center}
+\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{SpeakerEvalSlide-16-9-2017.png}
+\end{center}
+\end{frame}
+
 \end{document}
