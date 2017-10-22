@@ -34,7 +34,6 @@
 
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
-
 \section{Introduction}
 
 \subsection{About RedDeer}
@@ -87,6 +86,7 @@ RedDeer
 \item Hi-Level API - wizards, views from JEE
 \item Enhanced waiting conditions
 \item Requirements
+\item Basic Graphiti support
 \end{itemize}
 \vspace{0.5cm}
 SWTBot
@@ -137,6 +137,10 @@ public class MyWidget extends AbstractWidget {
 
 }
 \end{lstlisting}
+\begin{lstlisting}
+new MyWidget("OK");
+new MyWidget(new DefaultShell("My Dialog"), 1, "OK");  
+\end{lstlisting}
 \end{frame}
 
 \subsection{Hi-Level API}
@@ -159,15 +163,27 @@ problemsView.getAllWarnings();
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]
+\begin{center}
+\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{plugin_spy.png}
+\end{center}
+\end{frame}
+
 \subsection{Waiting conditions}
 \begin{frame}[fragile]
 \frametitle{Waiting conditions}
+Wait for some time (-Drd.timePeriodFactor)
 \begin{lstlisting}
 AbstractWait.sleep(TimePeriod.SHORT);
+\end{lstlisting}
+Wait until/until a condition is met
+\begin{lstlisting}
 new WaitUntil(new ConsoleHasText("Server is started"));
 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 new WaitUntil(new ShellIsAvailable("New Java Project"));
-
+\end{lstlisting}
+Not all conditions must be met
+\begin{lstlisting}
 new WaitUntil(condition, false);
 if (condition.getResult() != null) {
   ...
@@ -179,15 +195,40 @@ if (condition.getResult() != null) {
 \begin{frame}[fragile]
 \frametitle{Requirements}
 \begin{itemize}
-\item Requirement represents one prerequisite required by a test
-\item Similar to @BeforeClass but if a requirement cannot be fulfilled the test is not executed.
-\item Examples
-\begin{lstlisting}
-@Cleanworkspace 
-@OpenPerspective(JavaPerspective.class)
-@Server(state = RUNNING)
-\end{lstlisting}
+\item Requirements are fulfilled before @BeforeClass
+\item By requirements you can set the testing environment
+\item Specified by -Drd.config
+\item Only yaml and json files are supported
+\vspace{0.5cm}
+\begin{verbatim}
+org.eclipse.reddeer.requirements...ApacheTomcatServer
+- runtime": "/tmp/servers/tomcat/apache-tomcat-7.0.82"
+  version": "7.0"
+\end{verbatim}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Requirements}
+\begin{lstlisting}
+@RunWith(RedDeerSuite.class)
+@ApacheTomcatServer(state=ServerRequirementState.RUNNING)
+public class ServerPresentTest {
+	
+	@InjectRequirement
+	protected ApacheTomcatServerRequirement requirement;
+	
+	...
+
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Graphiti}
+\begin{frame}[fragile]
+\begin{center}
+\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{fuse_tooling.png}
+\end{center}
 \end{frame}
 
 \end{document}
