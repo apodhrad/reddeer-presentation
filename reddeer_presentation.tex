@@ -64,19 +64,80 @@ bot.button("OK").click();
 bot.textWithLabel("Project name").setText("helloworld");
 bot.editor("Demo.java").save();
 \end{lstlisting}
-%Matchers
-%\begin{itemize}
-%\item Hamcrest library
-%\item Widely used in widget searching
-%\begin{lstlisting}
-%new WithStyleMatcher(SWT.PUSH)
-%new WithLabelMatcher("Name");
-%new WithTextMatcher("Demoj.java");
-%\end{lstlisting}
-%\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+Common features in RedDeer and SWTBot
+\begin{itemize}
+\item Works with SWT, Eclipse plugins and RCP applications
+\item Supports Windows, Macosx and Linux
+\item Uses tycho for building plugins with maven
+\item Tests are executed in a non-UI thread
+\item Uses matchers from hamcrest lib for finding widgets
+\item Screenshot is captured if an exception is thrown
+\item GEF support
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+RedDeer
+\begin{itemize}
+\item Hi-Level API - wizards, views from JEE
+\item Enhanced waiting conditions
+\item Requirements
+\end{itemize}
+\vspace{0.5cm}
+SWTBot
+\begin{itemize}
+\item e4 support
+\end{itemize}
 \end{frame}
 
 \section{RedDeer in Details}
+
+\subsection{Finding a widget}
+\begin{frame}[fragile]
+\frametitle{Hamcrest matchers}
+\begin{lstlisting}
+public class MyMatcher extends BaseMatcher {
+
+  private String text;
+
+  public MyMatcher(String text) {
+    this.text = text;
+  }
+  
+  @Override
+  public boolean matches(Object object);
+    if (object instance of Button) {
+      return ((Button) object).getText().equals(text);
+    }
+  }
+
+} 
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Define a widget}
+\begin{lstlisting}
+public class MyWidget extends AbstractWidget {
+
+  private String text;
+
+  public MyWidget(String text) {
+    this(null, 0, new MyMatcher(text));
+  }
+
+  public MyWidget(ReferencedComposite, int index, String text) {
+    super(reference, 0, new MyMatcher(text));
+  }
+
+}
+\end{lstlisting}
+\end{frame}
 
 \subsection{Hi-Level API}
 \begin{frame}[fragile]
@@ -112,21 +173,6 @@ if (condition.getResult() != null) {
   ...
 }
 \end{lstlisting}
-\end{frame}
-
-\subsection{Matchers}
-\begin{frame}[fragile]
-\frametitle{Matchers}
-\begin{itemize}
-\item From hamcrest library
-\item Widely used in widget searching
-\item Provided by RedDeer: TextMatcher, RegexMatcher, LabelMatcher
-\item You can create your own matcher by extending BaseMatcher
-\item Just implement the following method
-\begin{lstlisting}
-public boolean matches(Object item);
-\end{lstlisting}
-\end{itemize}
 \end{frame}
 
 \subsection{Requirements}
