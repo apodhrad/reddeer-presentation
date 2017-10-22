@@ -178,16 +178,17 @@ AbstractWait.sleep(TimePeriod.SHORT);
 \end{lstlisting}
 Wait until/until a condition is met
 \begin{lstlisting}
-new WaitUntil(new ConsoleHasText("Server is started"));
 new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 new WaitUntil(new ShellIsAvailable("New Java Project"));
 \end{lstlisting}
 Not all conditions must be met
 \begin{lstlisting}
 new WaitUntil(condition, false);
-if (condition.getResult() != null) {
-  ...
-}
+if (condition.getResult() != null) { ... }
+\end{lstlisting}
+You can also group conditions
+\begin{lstlisting}
+new GroupWait(TimePeriod.LONG, condition1, condition2, ...);
 \end{lstlisting}
 \end{frame}
 
@@ -214,11 +215,17 @@ org.eclipse.reddeer.requirements...ApacheTomcatServer
 @RunWith(RedDeerSuite.class)
 @ApacheTomcatServer(state=ServerRequirementState.RUNNING)
 public class ServerPresentTest {
-	
-	@InjectRequirement
-	protected ApacheTomcatServerRequirement requirement;
-	
-	...
+
+  @InjectRequirement
+  protected ApacheTomcatServerRequirement requirement;
+
+  @RequirementRestriction
+  public static RequirementMatcher getRestrictionMatcher() {
+    return new RequirementMatcher(ApacheTomcatServer.class, 
+      "version" , new VersionMatcher(">=7.0"));
+  }
+
+  ...
 
 }
 \end{lstlisting}
