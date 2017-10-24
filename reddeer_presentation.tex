@@ -74,57 +74,20 @@ public class NewPackageWizardTest {
 %\end{itemize}
 %\end{frame}
 
-\subsection{RedDeer vs SWTBot}
-\begin{frame}[fragile]
-\frametitle{RedDeer vs SWTBot}
-RedDeer  
-\begin{lstlisting}
-new PushButton("OK").click();
-new LabeledText("Projec name").setText("helloworld");
-new TextEditor("Demo.java").save();
-\end{lstlisting}
-\vspace{0.5cm}
-SWTBot
-\begin{lstlisting}
-bot.button("OK").click();
-bot.textWithLabel("Project name").setText("helloworld");
-bot.editor("Demo.java").save();
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{RedDeer vs SWTBot}
-Common features in RedDeer and SWTBot
-\begin{itemize}
-\item Works with SWT, Eclipse plugins and RCP applications
-\item Supports Windows, Macosx and Linux
-\item Uses tycho for building plugins with maven
-\item Tests are executed in a non-UI thread
-\item Uses matchers from hamcrest lib for finding widgets
-\item Screenshot is captured if an exception is thrown
-\item GEF support
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{RedDeer vs SWTBot}
-RedDeer
-\begin{itemize}
-\item Hi-Level API - wizards, views from JEE
-\item Enhanced waiting conditions
-\item Requirements
-\item Basic Graphiti support
-\end{itemize}
-\vspace{0.5cm}
-SWTBot
-\begin{itemize}
-\item e4 support
-\end{itemize}
-\end{frame}
-
-\section{RedDeer in Details}
-
 \subsection{Finding a widget}
+
+\begin{frame}[fragile]
+\begin{center}
+\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher_0.png}}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{center}
+\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher.png}}
+\end{center}
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Hamcrest matchers}
 \begin{lstlisting}
@@ -170,9 +133,86 @@ new MyWidget(new DefaultShell("My Dialog"), 1, "OK");
 \end{lstlisting}
 \end{frame}
 
+\subsection{RedDeer vs SWTBot}
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+RedDeer  
+\begin{lstlisting}
+new PushButton("OK").click();
+new LabeledText("Projec name").setText("helloworld");
+new TextEditor("Demo.java").save();
+\end{lstlisting}
+\vspace{0.5cm}
+SWTBot
+\begin{lstlisting}
+bot.button("OK").click();
+bot.textWithLabel("Project name").setText("helloworld");
+bot.editor("Demo.java").save();
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+Common features in RedDeer and SWTBot
+\begin{itemize}
+\item Works with Eclipse plugins and SWT and RCP applications
+\item Supports Windows, Macosx and Linux
+\item Uses tycho for building plugins with maven
+\item Tests are executed in a non-UI thread
+\item Uses matchers from hamcrest lib for finding widgets
+\item Screenshot is captured if an exception is thrown
+\item GEF support
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{RedDeer vs SWTBot}
+RedDeer
+\begin{itemize}
+\item Enhanced waiting conditions
+\item Hi-Level API - wizards, views from JEE
+\item Requirements
+\item Basic Graphiti support
+\end{itemize}
+\vspace{0.5cm}
+SWTBot
+\begin{itemize}
+\item e4 support
+\end{itemize}
+\end{frame}
+
+\section{RedDeer in Details}
+
+\subsection{Waiting conditions}
+\begin{frame}[fragile]
+\frametitle{Waiting conditions}
+Wait for some time (-Drd.timePeriodFactor)
+\begin{lstlisting}
+AbstractWait.sleep(TimePeriod.SHORT);
+\end{lstlisting}
+\pause
+Wait until/until a condition is met
+\begin{lstlisting}
+new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+new WaitUntil(new ShellIsAvailable("New Java Project"));
+\end{lstlisting}
+\pause
+Not all conditions must be met
+\begin{lstlisting}
+new WaitUntil(condition, false);
+if (condition.getResult() != null) { ... }
+\end{lstlisting}
+\pause
+You can also group conditions
+\begin{lstlisting}
+new GroupWait(TimePeriod.LONG, condition1, condition2, ...);
+\end{lstlisting}
+\end{frame}
+
 \subsection{Hi-Level API}
 \begin{frame}[fragile]
 \frametitle{Hi-Level API}
+\pause
 Wizards
 \begin{lstlisting}
 JavaProjectWizard wizard = new JavaProjectWizard();
@@ -181,6 +221,7 @@ new NewJavaProjectWizardPageOne(wizard).setProjectName("foo");
 wizard.finish();
 \end{lstlisting}
 \vspace{0.5cm}
+\pause
 Views
 \begin{lstlisting}
 ProblemsView problemsView = new ProblemsView();
@@ -194,29 +235,6 @@ problemsView.getAllWarnings();
 \begin{center}
 \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{plugin_spy.png}
 \end{center}
-\end{frame}
-
-\subsection{Waiting conditions}
-\begin{frame}[fragile]
-\frametitle{Waiting conditions}
-Wait for some time (-Drd.timePeriodFactor)
-\begin{lstlisting}
-AbstractWait.sleep(TimePeriod.SHORT);
-\end{lstlisting}
-Wait until/until a condition is met
-\begin{lstlisting}
-new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-new WaitUntil(new ShellIsAvailable("New Java Project"));
-\end{lstlisting}
-Not all conditions must be met
-\begin{lstlisting}
-new WaitUntil(condition, false);
-if (condition.getResult() != null) { ... }
-\end{lstlisting}
-You can also group conditions
-\begin{lstlisting}
-new GroupWait(TimePeriod.LONG, condition1, condition2, ...);
-\end{lstlisting}
 \end{frame}
 
 \subsection{Requirements}
@@ -242,10 +260,14 @@ org.eclipse.reddeer.requirements...ApacheTomcatServer
 @RunWith(RedDeerSuite.class)
 @ApacheTomcatServer(state=ServerRequirementState.RUNNING)
 public class ServerPresentTest {
-
+\end{lstlisting}
+\pause
+\begin{lstlisting}
   @InjectRequirement
   protected ApacheTomcatServerRequirement requirement;
-
+\end{lstlisting}
+\pause
+\begin{lstlisting}
   @RequirementRestriction
   public static RequirementMatcher getRestrictionMatcher() {
     return new RequirementMatcher(ApacheTomcatServer.class, 
@@ -280,6 +302,19 @@ Shell shell = new DefaultShell("Confirm Delete");
 new PushButton(shell, "Yes").click();
 new WaitWhile(new ShellIsAvailable(shell);
 \end{lstlisting}
+\end{frame}
+
+\subsection{Projects which uses RedDeer}
+\begin{frame}[fragile]
+\frametitle{JBoss Tools Projects}
+\begin{itemize}
+\item Fuse Tooling \newline
+  https://github.com/jbosstools/jbosstools-fuse
+\item JBoss Tools Tests \newline
+  https://github.com/jbosstools/jbosstools-integration-tests
+\item JBoss Tools Integration Stack Tests \newline
+  https://github.com/jbosstools/jbosstools-integration-stack-tests
+\end{itemize}
 \end{frame}
 
 \section{Evaluate the session}
