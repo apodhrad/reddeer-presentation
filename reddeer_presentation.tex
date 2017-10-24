@@ -32,20 +32,47 @@
 
 \frame{\titlepage} 
 
-\frame{\frametitle{Table of contents}\tableofcontents} 
+% \frame{\frametitle{Table of contents}\tableofcontents} 
 
 \section{Introduction}
 
-\subsection{About RedDeer}
+\subsection{Example}
 \begin{frame}[fragile]
-\frametitle{About RedDeer}
-An extensible framework used for development of automated SWT/Eclipse tests which
-\begin{itemize}
-\item interacts with application’s user interface
-\item uses a programmatic approach just like SWTBot
-\item can be executed from IDE and from command line
-\end{itemize}
+\begin{center}
+\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package.png}}
+\end{center}
 \end{frame}
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+@RunWith(RedDeerSuite.class)
+public class NewPackageWizardTest {
+  ...
+\end{lstlisting}
+\pause
+\begin{lstlisting}
+  @Test
+  public void testCreatingNewJavaPackage() {    
+    Shell = new DefaultShell("New Java Package");
+    new LabeledText(shell, "Name:").setText("helloworld");
+    new PushButton(shell, "Finish").click();
+\end{lstlisting}
+\pause
+\begin{lstlisting}
+    new WaitWhile(new ShellIsAvailable(shell));
+\end{lstlisting}
+\end{frame}
+
+%\subsection{About RedDeer}
+%\begin{frame}[fragile]
+%\frametitle{About RedDeer}
+%An extensible framework used for development of automated SWT/Eclipse tests which
+%\begin{itemize}
+%\item interacts with application’s user interface
+%\item uses a programmatic approach just like SWTBot
+%\item can be executed from IDE and from command line
+%\end{itemize}
+%\end{frame}
 
 \subsection{RedDeer vs SWTBot}
 \begin{frame}[fragile]
