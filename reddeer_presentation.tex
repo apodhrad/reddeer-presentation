@@ -133,6 +133,32 @@ public class NewPackageWizardTest {
 %\end{lstlisting}
 %\end{frame}
 
+
+\subsection{Graphiti Example}
+\begin{frame}[fragile]
+\begin{center}
+\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{fuse_tooling.png}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Graphiti Example}
+\begin{lstlisting}
+GEFEditor gefEditor = new GEFEditor("blueprint.xml");
+gefEditor.addToolFromPalette("Log", 50, 100);
+gefEditor.addToolFromPalette("Bean", 200, 100);
+
+GraphitiEditPart bean = new LabeledGraphitiEditPart("Bean");
+bean.select();
+bean.getContextButton("Delete").click();
+
+Shell shell = new DefaultShell("Confirm Delete");
+new PushButton(shell, "Yes").click();
+new WaitWhile(new ShellIsAvailable(shell);
+\end{lstlisting}
+\end{frame}
+
+
 \subsection{RedDeer vs SWTBot}
 \begin{frame}[fragile]
 \frametitle{RedDeer vs SWTBot}
@@ -169,10 +195,10 @@ Common features in RedDeer and SWTBot
 \frametitle{RedDeer vs SWTBot}
 RedDeer
 \begin{itemize}
+\item Direct API
 \item Enhanced waiting conditions
 \item Hi-Level API - wizards, views from JEE
 \item Requirements
-\item Basic Graphiti support
 \end{itemize}
 \vspace{0.5cm}
 SWTBot
@@ -182,6 +208,27 @@ SWTBot
 \end{frame}
 
 \section{RedDeer in Details}
+
+\subsection{Direct API}
+\begin{frame}[fragile]
+\frametitle{Direct API}
+Preferences
+\begin{lstlisting}
+PreferenceUtils.setAutoBuildingOn();
+PreferenceUtils.setOpenAssociatedPerspective("never");
+PreferenceUtils.setConsoleOutputLimited(false);
+PreferenceUtils.setConsoleOpenedOnError(false);
+\end{lstlisting}
+\vspace{0.5cm}
+\pause
+Project
+\begin{lstlisting}
+Project.create("helloworld");
+Project.delete("helloworld");
+Project.isProject("helloworld");
+Project.getLocation("helloworld");
+\end{lstlisting}
+\end{frame}
 
 \subsection{Waiting conditions}
 \begin{frame}[fragile]
@@ -280,37 +327,13 @@ public class ServerPresentTest {
 \end{lstlisting}
 \end{frame}
 
-\subsection{Graphiti}
-\begin{frame}[fragile]
-\begin{center}
-\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{fuse_tooling.png}
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Requirements}
-\begin{lstlisting}
-GEFEditor gefEditor = new GEFEditor("blueprint.xml");
-gefEditor.addToolFromPalette("Log", 50, 100);
-gefEditor.addToolFromPalette("Bean", 200, 100);
-
-GraphitiEditPart bean = new LabeledGraphitiEditPart("Bean");
-bean.select();
-bean.getContextButton("Delete").click();
-
-Shell shell = new DefaultShell("Confirm Delete");
-new PushButton(shell, "Yes").click();
-new WaitWhile(new ShellIsAvailable(shell);
-\end{lstlisting}
-\end{frame}
-
 \subsection{Projects which uses RedDeer}
 \begin{frame}[fragile]
 \frametitle{JBoss Tools Projects}
 \begin{itemize}
 \item Fuse Tooling \newline
   https://github.com/jbosstools/jbosstools-fuse
-\item JBoss Tools Tests \newline
+\item JBoss Tools Integration Tests \newline
   https://github.com/jbosstools/jbosstools-integration-tests
 \item JBoss Tools Integration Stack Tests \newline
   https://github.com/jbosstools/jbosstools-integration-stack-tests
