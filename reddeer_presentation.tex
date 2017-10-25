@@ -74,64 +74,64 @@ public class NewPackageWizardTest {
 %\end{itemize}
 %\end{frame}
 
-\subsection{Finding a widget}
+%\subsection{Finding a widget}
 
-\begin{frame}[fragile]
-\begin{center}
-\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher_0.png}}
-\end{center}
-\end{frame}
+%\begin{frame}[fragile]
+%\begin{center}
+%\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher_0.png}}
+%\end{center}
+%\end{frame}
 
-\begin{frame}[fragile]
-\begin{center}
-\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher.png}}
-\end{center}
-\end{frame}
+%\begin{frame}[fragile]
+%\begin{center}
+%\frame{\includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{new_java_package_matcher.png}}
+%\end{center}
+%\end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Hamcrest matchers}
-\begin{lstlisting}
-public class MyMatcher extends BaseMatcher {
+%\begin{frame}[fragile]
+%\frametitle{Hamcrest matchers}
+%\begin{lstlisting}
+%public class MyMatcher extends BaseMatcher {
+%
+%  private String text;
+%
+%  public MyMatcher(String text) {
+%    this.text = text;
+%  }
+%  
+%  @Override
+%  public boolean matches(Object object);
+%    if (object instance of Button) {
+%      return ((Button) object).getText().equals(text);
+%    }
+%  }
+%
+%} 
+%\end{lstlisting}
+%\end{frame}
 
-  private String text;
-
-  public MyMatcher(String text) {
-    this.text = text;
-  }
-  
-  @Override
-  public boolean matches(Object object);
-    if (object instance of Button) {
-      return ((Button) object).getText().equals(text);
-    }
-  }
-
-} 
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Define a widget}
-\begin{lstlisting}
-public class MyWidget extends AbstractWidget {
-
-  private String text;
-
-  public MyWidget(String text) {
-    this(null, 0, new MyMatcher(text));
-  }
-
-  public MyWidget(ReferencedComposite, int index, String text) {
-    super(reference, 0, new MyMatcher(text));
-  }
-
-}
-\end{lstlisting}
-\begin{lstlisting}
-new MyWidget("OK");
-new MyWidget(new DefaultShell("My Dialog"), 1, "OK");  
-\end{lstlisting}
-\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Define a widget}
+%\begin{lstlisting}
+%public class MyWidget extends AbstractWidget {
+%
+%  private String text;
+%
+%  public MyWidget(String text) {
+%    this(null, 0, new MyMatcher(text));
+%  }
+%
+%  public MyWidget(ReferencedComposite, int index, String text) {
+%    super(reference, 0, new MyMatcher(text));
+%  }
+%
+%}
+%\end{lstlisting}
+%\begin{lstlisting}
+%new MyWidget("OK");
+%new MyWidget(new DefaultShell("My Dialog"), 1, "OK");  
+%\end{lstlisting}
+%\end{frame}
 
 \subsection{RedDeer vs SWTBot}
 \begin{frame}[fragile]
@@ -155,11 +155,11 @@ bot.editor("Demo.java").save();
 \frametitle{RedDeer vs SWTBot}
 Common features in RedDeer and SWTBot
 \begin{itemize}
-\item Works with Eclipse plugins and SWT and RCP applications
-\item Supports Windows, Macosx and Linux
-\item Uses tycho for building plugins with maven
-\item Tests are executed in a non-UI thread
-\item Uses matchers from hamcrest lib for finding widgets
+\item Programmatic approach
+\item Eclipse plugins and SWT or RCP applications
+\item Windows, Macosx and Linux support
+\item Tycho is used for building plugins with maven
+\item Can be executed from IDE and from command line
 \item Screenshot is captured if an exception is thrown
 \item GEF support
 \end{itemize}
